@@ -4,7 +4,7 @@ return array(
 	// In HTML5 tags are not single use slash at the end.
 	'html5' => FALSE,
 	// Add indent before tags
-	'indent' => PHP_EOL.'		',
+	'indent' => PHP_EOL.'	',
 	// Separator for parts of title tag, uses then tag content sets as array.
 	'title_separator' => ' - ',
 	// HTTP-EQUIV tags group 
@@ -22,14 +22,14 @@ return array(
 	),
 	// Tag values ​​by default
 	'tags' => array(
-		'title'				=> NULL,
-		'description'		=> NULL,
-		'keywords'			=> NULL,
-		'author'			=> NULL,
-		'copyright'			=> NULL,
-		'generator'			=> NULL,
-		'revisit'			=> '1',
-		'revisit-after'		=> '1 days',
+		'title'				=> '',
+		'description'		=> '',
+		'keywords'			=> '',
+		'author'			=> '',
+		'copyright'			=> '',
+		'generator'			=> '',
+		'revisit'			=> '3 days',
+		'revisit-after'		=> '3 days',
 		'robots'			=> 'all',
 		'viewport'			=> 'width=device-width, initial-scale=1.0',
 		'content-type'		=> Kohana::$content_type.'; charset='.Kohana::$charset,
