@@ -11,8 +11,8 @@ $meta = Meta::instance($config);
 ~~~
 Set tag:
 ~~~
-$meta->set('description', 'description text');
-$meta->content-language = I18n::$lang;
+$meta->set('content-language', I18n::$lang);
+$meta->description = 'description text';
 ~~~
 Sets title content as string or array.
 ~~~
