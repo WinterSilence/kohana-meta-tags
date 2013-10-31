@@ -1,5 +1,7 @@
 ##Meta tags module for Kohana framework 3.х
 
+[!!!] This version include RESTful controller for work with Meta class.
+
 ###Installation and setup:
 Unzip the archive and place the contents into a directory with modules(`DOCROOT/modules/`). 
 If necessary, copy `config/meta.php` in `APPPATH/config/meta.php` and change it.
