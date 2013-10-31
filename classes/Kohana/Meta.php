@@ -1,8 +1,8 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * Helper for work with HTML meta tags
+ * Class for work with HTML meta tags.
  * 
- * @package    Meta
+ * @package    Kohana/Meta
  * @category   Base
  * @author     WinterSilence <info@handy-soft.ru>
  * @copyright  2013 © handy-soft.ru
@@ -30,12 +30,12 @@ abstract class Kohana_Meta {
 	/**
 	 * Get class instance and sets config properties
 	 * 
-	 * @param  array $config
+	 * @param  array  $config
 	 * @return Meta
 	 */
 	public static function instance(array $config = array())
 	{
-		// Create instance
+		// Create class instance
 		if ( ! self::$_instance)
 		{
 			$class = get_called_class();
@@ -49,6 +49,7 @@ abstract class Kohana_Meta {
 				self::$_instance->_cfg[$key] = $value;
 			}
 		}
+		// Return instance
 		return self::$_instance;
 	}
 
@@ -56,9 +57,9 @@ abstract class Kohana_Meta {
 	 * Load configuration and default tags
 	 *
 	 * @return void
-	 * @uses   Kohana::$config
-	 * @uses   Config::load
-	 * @uses   Config_Group::as_array
+	 * @uses   Kohana
+	 * @uses   Config
+	 * @uses   Config_Group
 	 */
 	protected function __construct()
 	{
@@ -71,6 +72,9 @@ abstract class Kohana_Meta {
 	 * 
 	 * @param  string|array  $group
 	 * @return Meta
+	 * @uses   Kohana
+	 * @uses   Config
+	 * @uses   Config_Group
 	 */
 	public function load_from_config($group)
 	{
@@ -89,8 +93,8 @@ abstract class Kohana_Meta {
 	/**
 	 * Sets tags
 	 * 
-	 * @param  mixed   $name   Name tag or array tags
-	 * @param  string  $value  Content attribute
+	 * @param  string|array  $name   Name tag or array tags
+	 * @param  string        $value  Content attribute
 	 * @return Meta
 	 */
 	public function set($name, $value = NULL)
@@ -111,9 +115,9 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Get tags
+	 * Gets tags
 	 * 
-	 * @param  mixed  $name
+	 * @param  string  $name
 	 * @return mixed
 	 */
 	public function get($name = NULL)
@@ -129,32 +133,45 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Create meta tags
+	 * Delete tags
 	 * 
-	 * @return  string
-	 * @uses    HTML::attributes
+	 * @param  string|array  $name
+	 * @return Meta
 	 */
-	public function render()
+	public function delete($name)
 	{
+		$name = (array) $name;
+		foreach ($name as $tag)
+		{
+			unset($this->_tags[$tag]);
+		}
+		return $this;
+	}
+
+	/**
+	 * Create meta tags HTML block.
+	 * 
+	 * @param   string  $file  Template(View) filename
+	 * @return  string
+	 * @uses    View
+	 */
+	public function render($file = NULL)
+	{
+		// Delete empty tags
 		$tags = array_filter($this->_tags);
+		// Sets tags attributes
 		foreach ($tags as $name => $value)
 		{
-			if ($name == 'title')
+			if ($name != 'title')
 			{
-				if (is_array($value))
-				{
-					$value = implode($this->_cfg['title_separator'], $value);
-				}
-				$tags[$name] = '<title>'.$value.'</title>';
-			}
-			else
-			{
-				$attr = in_array($name, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
-				$value = HTML::attributes(array($attr => $name, 'content' => $value));
-				$tags[$name] = '<meta'.$value.($this->_cfg['html5'] ? '/' : '').'>';
+				$group = in_array($name, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
+				$tags[$name] = array($group => $name, 'content' => $value);
 			}
 		}
-		return implode($this->_cfg['indent'], $tags);
+		// Render template
+		return View::factory($this->_cfg['template'])
+			->set(array('tags' => $tags, 'cfg' => $this->_cfg))
+			->render($file);
 	}
 
 	/**
@@ -189,9 +206,9 @@ abstract class Kohana_Meta {
 	 * @param  string $name
 	 * @return mixed
 	 */
-	public function & __get($name)
+	public function __get($name)
 	{
-		return isset($this->_tags[$name]) ? $this->_tags[$name] : NULL;
+		return $this->get($name);;
 	}
 
 	/**
@@ -213,7 +230,7 @@ abstract class Kohana_Meta {
 	 */
 	public function __unset($name)
 	{
-		return unset($this->_tags[$name]);
+		$this->delete($name);
 	}
 
 	/**

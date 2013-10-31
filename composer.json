@@ -1,0 +1,11 @@
+{
+	"name": "wintersilence/kohana-meta-tags",
+	"type": "kohana-module",
+	"description": "Meta tags module for Kohana framework",
+	"license": "BSD-3-Clause",
+	"keywords": ["kohana", "framework", "meta", "tags"],
+	"require": {
+		"php": ">=5.3.3",
+		"kohana/core": "v3.3.1"
+	}
+}
