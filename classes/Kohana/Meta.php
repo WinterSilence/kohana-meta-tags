@@ -182,7 +182,7 @@ abstract class Kohana_Meta {
 	 * @return array
 	 * @uses   Arr::extract
 	 */
-	public static function parce($url, array $tags = array())
+	public static function parse($url, array $tags = array())
 	{
 		$result = (array) get_meta_tags($url);
 		return empty($tags) ? $result : Arr::extract($result, $tags);
