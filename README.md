@@ -50,7 +50,7 @@ echo $meta; // called __toString()
 ~~~
 
 ###Helpers:
-Parces meta tags from document:
+Parses meta tags from document:
 ~~~
-$tags = Meta::parce($url);
+$tags = Meta::parse($url);
 ~~~
