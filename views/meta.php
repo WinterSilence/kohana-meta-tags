@@ -9,7 +9,7 @@ if ( ! Fragment::load('meta:'.Request::initial()->url(), Date::MINUTE * 5, TRUE)
 	echo '<!-- meta tags begin -->';
 	if (isset($tags['title']))
 	{
-		echo '<title>'.implode(' - ', (array) $tags['title']).'</title>';
+		echo '<title>'.HTML::chars(implode(' - ', (array) $tags['title'])).'</title>';
 		unset($tags['title']);
 	}
 	$tags = array_filter($tags);
