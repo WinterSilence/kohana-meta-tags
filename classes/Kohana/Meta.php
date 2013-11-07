@@ -89,14 +89,14 @@ abstract class Kohana_Meta {
 			}
 			$tags = array_merge($tags, (array) $config);
 		}
-		// Sets tags
+		// Set tags
 		$this->set($tags);
 		
 		return $this;
 	}
 
 	/**
-	 * Sets tags
+	 * Set tags
 	 * 
 	 * @param  string|array  $name   Name tag or array tags
 	 * @param  string        $value  Content attribute
@@ -132,7 +132,7 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Gets tags
+	 * Get tags
 	 * 
 	 * @param  string  $name
 	 * @return mixed
@@ -141,7 +141,8 @@ abstract class Kohana_Meta {
 	{
 		if (is_null($name))
 		{
-			return $this->_tags;
+			// Returns only not empty tags
+			return array_filter($this->_tags);
 		}
 		elseif (isset($this->_tags[$name]))
 		{
@@ -174,7 +175,7 @@ abstract class Kohana_Meta {
 	public function render($file = NULL)
 	{
 		return View::factory($this->_cfg['template'])
-			->set(array('tags' => $this->_tags, 'cfg' => $this->_cfg))
+			->set('tags', $this->get())
 			->render($file);
 	}
 
