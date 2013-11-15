@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Class for work with HTML meta tags.
- * 
+ *
  * @package    Kohana/Meta
  * @category   Base
  * @author     WinterSilence <info@handy-soft.ru>
@@ -29,7 +29,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Get class instance and sets config properties
-	 * 
+	 *
 	 * @param  array  $config
 	 * @return Meta
 	 */
@@ -69,7 +69,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Load tags from config group(s)
-	 * 
+	 *
 	 * @param  string|array  $group
 	 * @return Meta
 	 * @uses   Kohana
@@ -91,13 +91,13 @@ abstract class Kohana_Meta {
 		}
 		// Set tags
 		$this->set($tags);
-		
+
 		return $this;
 	}
 
 	/**
 	 * Set tags
-	 * 
+	 *
 	 * @param  string|array  $name   Name tag or array tags
 	 * @param  string        $value  Content attribute
 	 * @return Meta
@@ -133,7 +133,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Get tags
-	 * 
+	 *
 	 * @param  string  $name
 	 * @return mixed
 	 */
@@ -152,7 +152,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Delete tags
-	 * 
+	 *
 	 * @param  string|array  $name
 	 * @return Meta
 	 */
@@ -167,7 +167,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Render template with meta data.
-	 * 
+	 *
 	 * @param   string  $file  Template(View) filename
 	 * @return  string
 	 * @uses    View
@@ -176,12 +176,13 @@ abstract class Kohana_Meta {
 	{
 		return View::factory($this->_cfg['template'])
 			->set('tags', $this->get())
+			->set('cache_lifetime', $this->_cfg['cache_lifetime'])
 			->render($file);
 	}
 
 	/**
 	 * Opens URL or file path and parses it line by line for <meta> tags. The parsing stops at </head>.
-	 * 
+	 *
 	 * @param  string $url  URL or path to file
 	 * @param  array  $tags Select current tags
 	 * @return array
@@ -194,7 +195,7 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Utilized for reading data from inaccessible properties. 
+	 * Utilized for reading data from inaccessible properties.
 	 *
 	 * @param  string  $name
 	 * @param  string  $value
@@ -218,7 +219,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Check isset tag
-	 * 
+	 *
 	 * @param  string $name
 	 * @return bool
 	 */
@@ -229,7 +230,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Delete tags
-	 * 
+	 *
 	 * @param  string $name
 	 * @return bool
 	 */
@@ -240,7 +241,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Allows a class to decide how it will react when it is treated like a string.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __toString()
@@ -250,14 +251,14 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Clone method protected from external call
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function __clone() {}
 
 	/**
 	 * Wakeup method protected from external call
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function __wakeup() {}
