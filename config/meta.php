@@ -3,6 +3,8 @@
 return array(
 	// Default template(View) for render tags
 	'template' => 'meta',
+	// Default cache lifetime on production environment
+	'cache_lifetime' => Date::MINUTE * 5,
 	// HTTP-EQUIV group tags 
 	'http-equiv' => array(
 		'resource-type',
