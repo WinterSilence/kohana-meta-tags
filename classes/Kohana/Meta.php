@@ -134,22 +134,68 @@ abstract class Kohana_Meta {
 	/**
 	 * Get tags
 	 *
+	 * Usage:
+	 *
+	 *     Meta::instance->get(); // returns all non empty tags
+	 *
+	 * Or:
+	 *
+	 *     Meta::instance->get($name); // returns tag value or NULL
+	 *
 	 * @param  string  $name
 	 * @return mixed
 	 */
 	public function get($name = NULL)
 	{
+		// when used: Meta::instance->get();
 		if (is_null($name))
 		{
 			// Returns only not empty tags
 			return array_filter($this->_tags);
 		}
-		elseif (isset($this->_tags[$name]))
+		// when used: Meta::instance->get($name);
+		if (isset($this->_tags[$name]))
 		{
 			return $this->_tags[$name];
 		}
+		// returns NULL if tag is not set
+		return NULL;
 	}
 
+	/**
+	 * Gets or sets the title tag
+	 *
+	 * Usage:
+	 *
+	 *     Meta::instance()->title(); // get title tag
+	 *
+	 *     Meta::instance()->title('My Website'); // sets title tag
+	 *     Meta::instance()->title('Home', TRUE); // parsed: 'Home - My Website'
+	 *
+	 * @param string/array $title sets the title
+	 * @param boolean $unshift whether replace or prepend to title
+	 * @return string/array
+	 */
+	public function title($title = NULL, $unshift = FALSE)
+	{
+		// acts as getter if $title is null
+		if (is_null($title))
+		{
+			return $this->get('title');
+		}
+		// acts as setter
+		// test if we want to prepend
+		if ($unshift)
+		{
+			// will cast to array
+			$new_title = (array) $title;
+			$old_title = (array) $this->get('title');
+			// merge them together, the new one will be prepended (array_unshift)
+			$this->set('title', array_merge($new_title, $old_title));
+		} else {
+			$this->set('title', $title);
+		}
+	}
 	/**
 	 * Delete tags
 	 *
