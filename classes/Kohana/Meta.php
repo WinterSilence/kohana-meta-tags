@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Class for work with HTML meta tags.
- * 
+ *
  * @package    Kohana/Meta
  * @category   Base
  * @author     WinterSilence <info@handy-soft.ru>
@@ -29,7 +29,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Get class instance and sets config properties
-	 * 
+	 *
 	 * @param  array  $config
 	 * @return Meta
 	 */
@@ -69,7 +69,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Load tags from config group(s)
-	 * 
+	 *
 	 * @param  string|array  $group
 	 * @return Meta
 	 * @uses   Kohana
@@ -91,13 +91,13 @@ abstract class Kohana_Meta {
 		}
 		// Set tags
 		$this->set($tags);
-		
+
 		return $this;
 	}
 
 	/**
 	 * Set tags
-	 * 
+	 *
 	 * @param  string|array  $name   Name tag or array tags
 	 * @param  string        $value  Content attribute
 	 * @return Meta
@@ -133,26 +133,72 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Get tags
-	 * 
+	 *
+	 * Usage:
+	 *
+	 *     Meta::instance->get(); // returns all non empty tags
+	 *
+	 * Or:
+	 *
+	 *     Meta::instance->get($name); // returns tag value or NULL
+	 *
 	 * @param  string  $name
 	 * @return mixed
 	 */
 	public function get($name = NULL)
 	{
+		// when used: Meta::instance->get();
 		if (is_null($name))
 		{
 			// Returns only not empty tags
 			return array_filter($this->_tags);
 		}
-		elseif (isset($this->_tags[$name]))
+		// when used: Meta::instance->get($name);
+		if (isset($this->_tags[$name]))
 		{
 			return $this->_tags[$name];
 		}
+		// returns NULL if tag is not set
+		return NULL;
 	}
 
 	/**
+	 * Gets or sets the title tag
+	 *
+	 * Usage:
+	 *
+	 *     Meta::instance()->title(); // get title tag
+	 *
+	 *     Meta::instance()->title('My Website'); // sets title tag
+	 *     Meta::instance()->title('Home', TRUE); // parsed: 'Home - My Website'
+	 *
+	 * @param string/array $title sets the title
+	 * @param boolean $unshift whether replace or prepend to title
+	 * @return string/array
+	 */
+	public function title($title = NULL, $unshift = FALSE)
+	{
+		// acts as getter if $title is null
+		if (is_null($title))
+		{
+			return $this->get('title');
+		}
+		// acts as setter
+		// test if we want to prepend
+		if ($unshift)
+		{
+			// will cast to array
+			$new_title = (array) $title;
+			$old_title = (array) $this->get('title');
+			// merge them together, the new one will be prepended (array_unshift)
+			$this->set('title', array_merge($new_title, $old_title));
+		} else {
+			$this->set('title', $title);
+		}
+	}
+	/**
 	 * Delete tags
-	 * 
+	 *
 	 * @param  string|array  $name
 	 * @return Meta
 	 */
@@ -167,7 +213,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Render template with meta data.
-	 * 
+	 *
 	 * @param   string  $file  Template(View) filename
 	 * @return  string
 	 * @uses    View
@@ -176,12 +222,13 @@ abstract class Kohana_Meta {
 	{
 		return View::factory($this->_cfg['template'])
 			->set('tags', $this->get())
+			->set('cache_lifetime', $this->_cfg['cache_lifetime'])
 			->render($file);
 	}
 
 	/**
 	 * Opens URL or file path and parses it line by line for <meta> tags. The parsing stops at </head>.
-	 * 
+	 *
 	 * @param  string $url  URL or path to file
 	 * @param  array  $tags Select current tags
 	 * @return array
@@ -194,7 +241,7 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Utilized for reading data from inaccessible properties. 
+	 * Utilized for reading data from inaccessible properties.
 	 *
 	 * @param  string  $name
 	 * @param  string  $value
@@ -218,7 +265,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Check isset tag
-	 * 
+	 *
 	 * @param  string $name
 	 * @return bool
 	 */
@@ -229,7 +276,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Delete tags
-	 * 
+	 *
 	 * @param  string $name
 	 * @return bool
 	 */
@@ -240,7 +287,7 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Allows a class to decide how it will react when it is treated like a string.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __toString()
@@ -250,14 +297,14 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Clone method protected from external call
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function __clone() {}
 
 	/**
 	 * Wakeup method protected from external call
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function __wakeup() {}
