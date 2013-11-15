@@ -1,6 +1,12 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-if ( ! Fragment::load('meta:'.Request::initial()->url(), Date::MINUTE * 5, TRUE))
+$cache_lifetime =
+  Kohana::$environment === Kohana::PRODUCTION ? // test the environment
+  $cache_lifetime : // use the cache lifetime value from config
+  0; // no caching for DEVELOPMENT environment
+
+
+if ( ! Fragment::load('meta:'.Request::initial()->url(), $cache_lifetime, TRUE))
 {
 	if ( ! isset($tags))
 	{
