@@ -2,13 +2,13 @@
 
 if ( ! Route::cache())
 {
-	Route::set('meta-tags', 'meta-tags(/tag)', array(
+	Route::set('meta', 'meta(/<tag>)', array(
 			'tag' => '[-\w]+',
 		))
 		->defaults(array(
 			'directory'  => 'REST',
 			'controller' => 'Meta',
 			'action'     => 'get',
-			'tag'         => NULL,
+			'tag'        => NULL,
 		));
 }

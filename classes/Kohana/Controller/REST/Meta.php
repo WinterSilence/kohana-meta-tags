@@ -1,13 +1,14 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Abstract RESTful controller for work with Meta class. 
- *
- *
+ * 
  * @package    Kohana
  * @category   Controller
- * @author     Kohana Team
- * @copyright  (c) 2009-2012 Kohana Team
- * @license    http://kohanaframework.org/license
+ * @author     WinterSilence <info@handy-soft.ru>
+ * @copyright  2013 © handy-soft.ru
+ * @license    MIT
+ * @link       http://github.com/WinterSilence/kohana-meta-tags
+ * @see        http://wikipedia.org/wiki/Meta_element
  */
 abstract class Kohana_Controller_REST_Meta extends Controller {
 
@@ -21,12 +22,12 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	);
 
 	/**
-	 * @var  string 
+	 * @var  string  Request method
 	 */
 	protected $_method = '';
 
 	/**
-	 * @var  Meta
+	 * @var  Meta  Meta class singleton
 	 */
 	protected $_meta = NULL;
 
@@ -39,8 +40,9 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	 */
 	public function before()
 	{
+		// Detect and set method
 		$this->_method = Arr::get($_SERVER, 'HTTP_X_HTTP_METHOD_OVERRIDE', $this->request->method());
-		
+		// Detect and change action
 		if ( ! isset($this->_actions[$this->_method]))
 		{
 			$this->request->action('invalid');
@@ -49,9 +51,9 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 		{
 			$this->request->action($this->_actions[$this->_method]);
 		}
-		
+		// Get Meta instance
 		$this->_meta = Meta::instance();
-		
+		// Call parent
 		parent::before();
 	}
 
@@ -64,12 +66,14 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	 */
 	public function after()
 	{
+		// Sets response headers
 		if (in_array($this->_method, array(Request::POST, Request::DELETE)))
 		{
 			$this->response->headers('cache-control', 'no-cache, no-store, max-age=0, must-revalidate');
 		}
-		
 		$this->response->headers('content-type', 'application/json; charset='.Kohana::$charset);
+		// Call parent
+		parent::after();
 	}
 
 	/**
@@ -84,27 +88,30 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	}
 
 	/**
-	 * 
+	 * Get tag(s)
 	 * 
 	 * @return void
 	 */
 	public function action_get()
 	{
+		// Set tag name
 		$tag = $this->request->param('tag');
-		
 		if (is_null($tag))
 		{
+			// Get all tags
 			$data = $this->_meta->get();
 		}
 		else( ! isset($this->_meta[$tag]))
 		{
+			// Tags not found
 			$this->response->status(404);
 		}
 		else
 		{
+			// Get tag attributes
 			$data = $this->_meta->get($tag);
 		}
-		
+		// Set response as JSON array
 		if (isset($data))
 		{
 			$this->response->body(json_encode($data));
@@ -112,7 +119,7 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	}
 
 	/**
-	 * 
+	 * Set tag(s)
 	 * 
 	 * @return void
 	 */
@@ -122,20 +129,27 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 	}
 	
 	/**
-	 * 
+	 * Delete tag(s)
 	 * 
 	 * @return void
 	 */
 	public function action_delete()
 	{
+		// Set tag name
 		$tag = $this->request->param('tag');
-		
-		if ( ! isset($this->_meta[$tag]))
+		if (is_null($tag))
 		{
+			// Delete all tags
+			$this->_meta->delete();
+		}
+		else( ! isset($this->_meta[$tag]))
+		{
+			// Tags not found
 			$this->response->status(404);
 		}
 		else
 		{
+			// Delete tag
 			$this->_meta->delete($tag);
 		}
 	}
