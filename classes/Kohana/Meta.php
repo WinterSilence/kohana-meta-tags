@@ -78,6 +78,8 @@ abstract class Kohana_Meta {
 	 */
 	public function load_from_config($group)
 	{
+		$tags = array();
+		// Merge configs data
 		foreach ( (array) $group as $name)
 		{
 			$config = Kohana::$config->load($name);
@@ -85,13 +87,16 @@ abstract class Kohana_Meta {
 			{
 				$config = $config->as_array();
 			}
-			$this->_tags = array_merge($this->_tags, (array) $config);
+			$tags = array_merge($tags, (array) $config);
 		}
+		// Set tags
+		$this->set($tags);
+		
 		return $this;
 	}
 
 	/**
-	 * Sets tags
+	 * Set tags
 	 * 
 	 * @param  string|array  $name   Name tag or array tags
 	 * @param  string        $value  Content attribute
@@ -99,23 +104,35 @@ abstract class Kohana_Meta {
 	 */
 	public function set($name, $value = NULL)
 	{
-		if (is_array($name))
+		if ( ! is_array($name))
 		{
-			foreach ($name as $tag => $value)
-			{
-				$this->set($tag, $value);
-			}
+			$name = array($name => $value);
 		}
-		else
+		foreach ($name as $tag => $value)
 		{
-			$name = strtolower($name);
-			$this->_tags[$name] = $value;
+			$tag = strtolower($tag);
+			if ($tag != 'title')
+			{
+				if (isset($this->_tags[$tag]))
+				{
+					$this->_tags[$tag]['content'] = $value;
+				}
+				else
+				{
+					$group = in_array($tag, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
+					$this->_tags[$tag] = array($group => $tag, 'content' => $value);
+				}
+			}
+			else
+			{
+				$this->_tags[$tag] =  $value;
+			}
 		}
 		return $this;
 	}
 
 	/**
-	 * Gets tags
+	 * Get tags
 	 * 
 	 * @param  string  $name
 	 * @return mixed
@@ -124,7 +141,8 @@ abstract class Kohana_Meta {
 	{
 		if (is_null($name))
 		{
-			return $this->_tags;
+			// Returns only not empty tags
+			return array_filter($this->_tags);
 		}
 		elseif (isset($this->_tags[$name]))
 		{
@@ -140,8 +158,7 @@ abstract class Kohana_Meta {
 	 */
 	public function delete($name)
 	{
-		$name = (array) $name;
-		foreach ($name as $tag)
+		foreach ( (array) $name as $tag)
 		{
 			unset($this->_tags[$tag]);
 		}
@@ -149,7 +166,7 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Create meta tags HTML block.
+	 * Render template with meta data.
 	 * 
 	 * @param   string  $file  Template(View) filename
 	 * @return  string
@@ -157,20 +174,8 @@ abstract class Kohana_Meta {
 	 */
 	public function render($file = NULL)
 	{
-		// Delete empty tags
-		$tags = array_filter($this->_tags);
-		// Sets tags attributes
-		foreach ($tags as $name => $value)
-		{
-			if ($name != 'title')
-			{
-				$group = in_array($name, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
-				$tags[$name] = array($group => $name, 'content' => $value);
-			}
-		}
-		// Render template
 		return View::factory($this->_cfg['template'])
-			->set(array('tags' => $tags, 'cfg' => $this->_cfg))
+			->set('tags', $this->get())
 			->render($file);
 	}
 
@@ -208,7 +213,7 @@ abstract class Kohana_Meta {
 	 */
 	public function __get($name)
 	{
-		return $this->get($name);;
+		return $this->get($name);
 	}
 
 	/**
@@ -223,7 +228,7 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Delete tag
+	 * Delete tags
 	 * 
 	 * @param  string $name
 	 * @return bool

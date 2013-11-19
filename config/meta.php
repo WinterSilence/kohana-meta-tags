@@ -2,7 +2,7 @@
 
 return array(
 	// Default template(View) for render tags
-	'template' => 'meta'.DIRECTORY_SEPARATOR.'default',
+	'template' => 'meta',
 	// HTTP-EQUIV group tags 
 	'http-equiv' => array(
 		'resource-type',
@@ -21,7 +21,7 @@ return array(
 	),
 	// Load tags from config groups. Ex: array('meta.tags', 'site_meta', 'blog.meta_tags')
 	'tags_config_groups' => array('meta.tags'),
-	// Default tag values ​. See http://en.wikipedia.org/wiki/Meta_element
+	// Default tag values. See http://en.wikipedia.org/wiki/Meta_element
 	'tags' => array(
 		'title'				=> '',
 		'description'		=> '',
@@ -34,13 +34,13 @@ return array(
 		'url'				=> '',
 		'rating'			=> 'general',
 		'audience'			=> 'all',
-		'document-state'	=> 'Dynamic',
+		'document-state'	=> 'dynamic',
 		'revisit'			=> '3 days',
 		'revisit-after'		=> '3 days',
 		'robots'			=> 'all',
 		'content-type'		=> Kohana::$content_type.'; charset='.Kohana::$charset,
 		'content-language'	=> I18n::$lang,
-		'x-ua-compatible'	=> 'IE=edge',
+		'x-ua-compatible'	=> 'IE=edge,chrome=1',
 		'viewport'			=> 'width=device-width, initial-scale=1.0',
 	),
 );
