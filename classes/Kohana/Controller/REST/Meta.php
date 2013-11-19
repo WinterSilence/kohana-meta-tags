@@ -1,14 +1,14 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * Abstract RESTful controller for work with Meta class. 
+ * RESTful controller for work with Meta class. 
  * 
- * @package    Kohana
- * @category   Controller
+ * @package    Kohana/Meta
+ * @category   Controllers
+ * @version    1.3
  * @author     WinterSilence <info@handy-soft.ru>
  * @copyright  2013 © handy-soft.ru
  * @license    MIT
  * @link       http://github.com/WinterSilence/kohana-meta-tags
- * @see        http://wikipedia.org/wiki/Meta_element
  */
 abstract class Kohana_Controller_REST_Meta extends Controller {
 
@@ -101,7 +101,7 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 			// Get all tags
 			$data = $this->_meta->get();
 		}
-		else( ! isset($this->_meta[$tag]))
+		elseif ( ! isset($this->_meta[$tag]))
 		{
 			// Tags not found
 			$this->response->status(404);
@@ -142,7 +142,7 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 			// Delete all tags
 			$this->_meta->delete();
 		}
-		else( ! isset($this->_meta[$tag]))
+		elseif ( ! isset($this->_meta[$tag]))
 		{
 			// Tags not found
 			$this->response->status(404);
