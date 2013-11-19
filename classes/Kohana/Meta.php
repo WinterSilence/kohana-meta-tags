@@ -91,7 +91,7 @@ abstract class Kohana_Meta {
 		}
 		// Set tags
 		$this->set($tags);
-		
+		// Return self
 		return $this;
 	}
 
@@ -180,17 +180,20 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Opens URL or file path and parses it line by line for <meta> tags. The parsing stops at </head>.
+	 * Wrapper for get\set title tag
 	 * 
-	 * @param  string $url  URL or path to file
-	 * @param  array  $tags Select current tags
-	 * @return array
-	 * @uses   Arr::extract
+	 * @param   mixed  $value  New title value
+	 * @return  mixed
 	 */
-	public static function parse($url, array $tags = array())
+	public function title($value = NULL)
 	{
-		$result = (array) get_meta_tags($url);
-		return empty($tags) ? $result : Arr::extract($result, $tags);
+		// Get title
+		if (is_null($value))
+		{
+			return $this->get('title');
+		}
+		// Set title
+		return $this->set('title', $value);
 	}
 
 	/**
