@@ -5,41 +5,41 @@ Unzip the archive and place the contents into a directory with modules(`DOCROOT/
 If necessary, copy `config/meta.php` in `APPPATH/config/meta.php` and change it.
 
 ###Basic usage:
-*Instance class* 
+**Instance class**<br>
 Optional, you can set new config options.
 ~~~
 $meta = Meta::instance($config);
 ~~~
-*Set tag*:
+**Set tag**
 ~~~
 $meta->set('content-language', I18n::$lang);
 $meta->description = 'description text';
 ~~~
-*Set tags*:
+**Set tags**
 ~~~
 $meta->set(array('author' => 'WinterSilence', 'generator' => 'Kohana 3.3'));
 ~~~
-*Get tag*:
+**Get tag**
 ~~~
 $meta->get('description');
 $tag_content = $meta->description;
 ~~~
-*Get all tag*:
+**Get all tag**
 ~~~
 $all_tags = $meta->get();
 ~~~
-*Unset*:
+*Unset**
 ~~~
 unset($meta->description);
 ~~~
-*Isset*:
+**Isset**
 ~~~
 if (isset($meta->description))
 {
 	// ...
 }
 ~~~
-*Title tag*:
+**Title tag**<br>
 Meta class have method-wrapper for get\set title tag.
 ~~~
 $title = $meta->title();
@@ -47,17 +47,18 @@ $title = $meta->title();
 $meta->title('Site name - Page name');
 $meta->title(array('Site name', 'Page name'));
 ~~~
-*Display\Render tags*:
-Add in your template(View) subview of meta module. 
-Module includes 2 subviews, but you can create a custom version.
+**Display\Render tags**<br>
+Add in your template(View) subview of meta module.<br>
+Module includes 2 subviews, but you can create a custom version.<br>
 Full\default version:
 ~~~
 <?php echo View::factory('meta/full') ?>
 ~~~
 Light\alternative version:
+~~~
 <?php echo View::factory('meta/easy') ?>
 ~~~
-As alternative: 
+As alternative:<br>
 forcibly call render method (uses for sets nonstandard template)
 ~~~
 <?php echo Meta::instance()->render($view_filename) ?>
