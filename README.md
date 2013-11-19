@@ -69,7 +69,7 @@ or display Meta object as string (called magic method __toString())
 
 ###Hint:
 For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/manual/function.get-meta-tags.php](http://php.net/manual/function.get-meta-tags.php).
+For gets more info visit [http://php.net/](http://php.net/manual/function.get-meta-tags.php).
 ~~~
 // Assuming the above tags are at www.example.com
 $tags = get_meta_tags('http://www.example.com/');

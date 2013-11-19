@@ -1,36 +1,37 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * Class for work with HTML meta tags.
+ * Class for work with HTML meta tags. <br>
+ * For get more info about meta tags visit [http://wikipedia.org/wiki/Meta_element](http://wikipedia.org/wiki/Meta_element).
  * 
  * @package    Kohana/Meta
  * @category   Base
+ * @version    1.3
  * @author     WinterSilence <info@handy-soft.ru>
  * @copyright  2013 © handy-soft.ru
  * @license    MIT
  * @link       http://github.com/WinterSilence/kohana-meta-tags
- * @see        http://wikipedia.org/wiki/Meta_element
  */
 abstract class Kohana_Meta {
 
 	/**
-	 * @var Meta Class instance
+	 * @var  Meta  Class singleton
 	 */
 	protected static $_instance = NULL;
 
 	/**
-	 * @var array Configuration options
+	 * @var  array  Configuration options
 	 */
 	protected $_cfg = array();
 
 	/**
-	 * @var array Meta tags
+	 * @var  array  Meta tags
 	 */
 	protected $_tags = array();
 
 	/**
 	 * Get class instance and sets config properties
 	 * 
-	 * @param  array  $config
+	 * @param  array  $config  Optional configuration options
 	 * @return Meta
 	 */
 	public static function instance(array $config = array())
@@ -68,9 +69,12 @@ abstract class Kohana_Meta {
 	}
 
 	/**
-	 * Load tags from config group(s)
+	 * Load tags from config
 	 * 
-	 * @param  string|array  $group
+	 *     Meta::instance()->load_from_config('cms.meta_tags');
+	 *     Meta::instance()->load_from_config(array('meta_tags', 'blog.meta'));
+	 * 
+	 * @param  string|array  $group  Config name or an array of them
 	 * @return Meta
 	 * @uses   Kohana
 	 * @uses   Config
@@ -108,6 +112,7 @@ abstract class Kohana_Meta {
 		{
 			$name = array($name => $value);
 		}
+		// Set tags
 		foreach ($name as $tag => $value)
 		{
 			$tag = strtolower($tag);
@@ -115,16 +120,19 @@ abstract class Kohana_Meta {
 			{
 				if (isset($this->_tags[$tag]))
 				{
+					// Update meta tag
 					$this->_tags[$tag]['content'] = $value;
 				}
 				else
 				{
+					// Add meta tag
 					$group = in_array($tag, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
 					$this->_tags[$tag] = array($group => $tag, 'content' => $value);
 				}
 			}
 			else
 			{
+				// Set title tag
 				$this->_tags[$tag] =  $value;
 			}
 		}
@@ -141,11 +149,12 @@ abstract class Kohana_Meta {
 	{
 		if (is_null($name))
 		{
-			// Returns only not empty tags
+			// Get all nonempty tags
 			return array_filter($this->_tags);
 		}
 		elseif (isset($this->_tags[$name]))
 		{
+			// Get tag
 			return $this->_tags[$name];
 		}
 	}
@@ -156,17 +165,24 @@ abstract class Kohana_Meta {
 	 * @param  string|array  $name
 	 * @return Meta
 	 */
-	public function delete($name)
+	public function delete($name = NULL)
 	{
-		foreach ( (array) $name as $tag)
+		if (is_null($name))
 		{
-			unset($this->_tags[$tag]);
+			$this->_tags = array();
+		}
+		else
+		{
+			foreach ( (array) $name as $tag)
+			{
+				unset($this->_tags[$tag]);
+			}
 		}
 		return $this;
 	}
 
 	/**
-	 * Render template with meta data.
+	 * Render template(View) with meta data.
 	 * 
 	 * @param   string  $file  Template(View) filename
 	 * @return  string
