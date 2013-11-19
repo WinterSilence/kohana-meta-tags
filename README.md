@@ -28,7 +28,7 @@ $tag_content = $meta->description;
 ~~~
 $all_tags = $meta->get();
 ~~~
-*Unset**
+**Unset**
 ~~~
 unset($meta->description);
 ~~~
