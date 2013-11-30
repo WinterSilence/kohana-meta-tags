@@ -276,13 +276,19 @@ abstract class Kohana_Meta {
 	 * 
 	 * @return void
 	 */
-	protected function __clone() {}
+	public function __clone()
+	{
+		throw new Kohana_Exception('Cloning of Meta objects is forbidden');
+	}
 
 	/**
 	 * Wakeup method protected from external call
 	 * 
 	 * @return void
 	 */
-	protected function __wakeup() {}
+	public function __wakeup()
+	{
+		throw new Kohana_Exception('Wakeup of Meta objects is forbidden');
+	}
 
 } // End Meta

@@ -19,7 +19,7 @@ return array(
 		'x-ua-compatible',
 		'window-target',
 	),
-	// Load tags from config groups. Ex: array('meta.tags', 'site_meta', 'blog.meta_tags')
+	// Auto load tags from config groups. Ex: array('meta.tags', 'site_meta', 'blog.meta_tags')
 	'tags_config_groups' => array('meta.tags'),
 	// Default tag values. See http://en.wikipedia.org/wiki/Meta_element
 	'tags' => array(
