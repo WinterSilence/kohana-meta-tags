@@ -41,10 +41,10 @@ return array(
 		'content-type'		=> Kohana::$content_type.'; charset='.Kohana::$charset,
 		'content-language'	=> I18n::$lang,
 		'x-ua-compatible'	=> 'IE=edge,chrome=1',
-		'viewport'			=> 'width=device-width, initial-scale=1.0',
+		'viewport'			=> 'width=device-width,initial-scale=1.0',
 	),
-	// Cache lifetime in seconds. Used in production version. Default value = 300(5 minutes)
-	'cache_lifetime' => (Kohana::$enviropment == Kohana::PRODUCTION ? 300 : 0), 
+	// Cache lifetime in seconds. Default value = 300(5 minutes)
+	'cache_lifetime' => (Kohana::$caching ? 300 : 0), 
 	// Add slash at end of tag? Set as FALSE for HTML5
 	'slash_at_end' => TRUE, 
 	// A separator is added between the parts of the title array

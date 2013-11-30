@@ -9,7 +9,7 @@ if ( ! isset($tags))
 }
 // Load configuration options
 $cfg = Arr::extract(Kohana::$config->load('meta'), array('cache_lifetime', 'slash_at_end', 'title_separator'));
-// Check\load cache (work only in production version)
+// Check\load cache
 if ( ! Fragment::load('meta:'.var_export($tags, TRUE), (int) $cfg['cache_lifetime'], TRUE))
 {
 	echo '<!-- Meta tags: begin -->'.PHP_EOL;
@@ -27,8 +27,8 @@ if ( ! Fragment::load('meta:'.var_export($tags, TRUE), (int) $cfg['cache_lifetim
 		echo '<meta'.HTML::attributes($attributes).$cfg['slash_at_end'].'>'.PHP_EOL;
 	}
 	echo '<!-- Meta tags: end -->'.PHP_EOL;
-	//Caching displayed tags (work only in production version)
-	if ($cfg['cache_lifetime'])
+	//Caching displayed tags
+	if (Kohana::$caching)
 	{
 		Fragment::save();
 	}

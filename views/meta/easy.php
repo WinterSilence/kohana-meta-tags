@@ -3,7 +3,7 @@
  * Easy\light\alternative version.
  */
 // Sets cache lifetime in seconds
-$cache_lifetime = (Kohana::$enviropment == Kohana::PRODUCTION ? 300 : 0);
+$cache_lifetime = Kohana::$caching ? 300 : 0;
 // Check\load cache (work only in production version)
 if ( ! Fragment::load('meta:'.Request::initial()->url(), $cache_lifetime, TRUE))
 {
@@ -26,7 +26,7 @@ if ( ! Fragment::load('meta:'.Request::initial()->url(), $cache_lifetime, TRUE))
 	}
 	echo '<!-- Meta tags: end -->'.PHP_EOL;
 	//Caching displayed tags (work only in production version)
-	if ($cache_lifetime)
+	if (Kohana::$caching)
 	{
 		Fragment::save();
 	}
