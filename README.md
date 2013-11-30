@@ -47,6 +47,17 @@ $title = $meta->title();
 $meta->title('Site name - Page name');
 $meta->title(array('Site name', 'Page name'));
 ~~~
+or use magic methods in difficult situations:
+~~~
+$meta->title = array('Shop name', 'Category');
+array_push(Meta::instance()->title, 'Product 123');
+// result: array('Shop name', 'Category', 'Product 123');
+~~~
+**Loading tags from Config**<br>
+~~~
+$meta->load_from_config('cms.meta_tags');
+$meta->load_from_config(array('site_main_config', 'second_config-blog.meta'));
+~~~
 **Display\Render tags**<br>
 Add in your template(View) subview of meta module.<br>
 Module includes 2 subviews, but you can create a custom version.<br>
@@ -70,7 +81,7 @@ or display Meta object as string (called magic method __toString())
 
 ###Hint:
 For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/](http://php.net/manual/function.get-meta-tags.php).
+For gets more info visit [http://php.net/manual/function.get-meta-tags.php](http://php.net/manual/function.get-meta-tags.php).
 ~~~
 // Assuming the above tags are at www.example.com
 $tags = get_meta_tags('http://www.example.com/');

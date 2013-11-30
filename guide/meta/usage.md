@@ -42,6 +42,17 @@ $title = $meta->title();
 $meta->title('Site name - Page name');
 $meta->title(array('Site name', 'Page name'));
 ~~~
+or use magic methods in difficult situations:
+~~~
+$meta->title = array('Shop name', 'Category');
+array_push(Meta::instance()->title, 'Product 123');
+// result: array('Shop name', 'Category', 'Product 123');
+~~~
+##Loading tags from Config
+~~~
+$meta->load_from_config('cms.meta_tags');
+$meta->load_from_config(array('site_main_config', 'second_config-blog.meta'));
+~~~
 ##Display\Render tags
 Add in your template(View) subview of meta module. 
 Module includes 2 subviews, but you can create a custom version.

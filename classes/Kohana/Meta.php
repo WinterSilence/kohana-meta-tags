@@ -226,7 +226,11 @@ abstract class Kohana_Meta {
 
 	/**
 	 * Get tags
-	 *
+	 * 
+	 *     Meta::instance()->title = array('Shop name', 'Category');
+	 *     array_push(Meta::instance()->title, 'Product 123');
+	 *     // result: array('Shop name', 'Category', 'Product 123');
+	 * 
 	 * @param  string $name
 	 * @return mixed
 	 */
