@@ -1,17 +1,27 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * Class for work with HTML meta tags. <br>
+ * Class for work with HTML meta tags. 
  * For get more info about meta tags visit [http://wikipedia.org/wiki/Meta_element](http://wikipedia.org/wiki/Meta_element).
  * 
  * @package    Kohana/Meta
  * @category   Base
- * @version    1.3
+ * @version    1.4
  * @author     WinterSilence <info@handy-soft.ru>
+ * @author     Samuel Demirdjian
  * @copyright  2013 © handy-soft.ru
  * @license    MIT
  * @link       http://github.com/WinterSilence/kohana-meta-tags
  */
 abstract class Kohana_Meta {
+
+	/**
+	 * Uses in title method
+	 */
+	const TITLE_REPLACE = 0;
+	const TITLE_UNSHIFT = 1;
+	const TITLE_PREPEND = 1; // Same as unshift
+	const TITLE_PUSH    = 2;
+	const TITLE_APPEND  = 2; // Same as push
 
 	/**
 	 * @var  Meta  Class singleton
@@ -198,18 +208,35 @@ abstract class Kohana_Meta {
 	/**
 	 * Wrapper for get\set title tag
 	 * 
-	 * @param   mixed  $value  New title value
+	 * @param   mixed    $value   New title value
+	 * @param   integer  $method  Action type for title array
 	 * @return  mixed
 	 */
-	public function title($value = NULL)
+	public function title($title = NULL, $method = static::TITLE_REPLACE)
 	{
-		// Get title
-		if (is_null($value))
+		// Acts as getter if $title is null
+		if (is_null($title))
 		{
 			return $this->get('title');
 		}
-		// Set title
-		return $this->set('title', $value);
+		// Acts as setter
+		$new_title = (array) $title;
+		$old_title = (array) $this->get('title');
+		switch ($method)
+		{
+			case static::TITLE_UNSHIFT:
+				// Merge, the new one will be prepended (like array_unshift)
+				$this->set('title', array_merge($new_title, $old_title));
+				break;
+			case static::TITLE_PUSH:
+				// Merge, the new one will be appended (like array_push)
+				$this->set('title', array_merge($old_title, $new_title));
+				break;
+			default: // Case Meta::TITLE_REPLACE:
+				// Replace
+				$this->set('title', $new_title);
+		}
+		return $this;
 	}
 
 	/**
