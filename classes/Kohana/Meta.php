@@ -244,7 +244,7 @@ abstract class Kohana_Meta {
 	 *
 	 * @param  string  $name
 	 * @param  string  $value
-	 * @return voide
+	 * @return void
 	 */
 	public function __set($name, $value)
 	{
