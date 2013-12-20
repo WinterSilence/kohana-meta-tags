@@ -212,7 +212,7 @@ abstract class Kohana_Meta {
 	 * @param   integer  $method  Action type for title array
 	 * @return  mixed
 	 */
-	public function title($title = NULL, $method = static::TITLE_REPLACE)
+	public function title($title = NULL, $method = self::TITLE_REPLACE)
 	{
 		// Acts as getter if $title is null
 		if (is_null($title))
@@ -238,6 +238,31 @@ abstract class Kohana_Meta {
 		}
 		return $this;
 	}
+
+    public function content_type($mime_type = 'text/html', $encoding = NULL)
+    {
+        if ( ! $encoding )
+        {
+            $encoding = Kohana::$charset;
+        }
+
+        $this->set('content-type', $mime_type.'; charset='.$encoding);
+    }
+
+    public function description($text)
+    {
+        $this->set('description', $text);
+    }
+
+    public function keywords($text)
+    {
+        $this->set('keywords', $text);
+    }
+
+    public function viewport($value)
+    {
+        $this->set('viewport', $value);
+    }
 
 	/**
 	 * Utilized for reading data from inaccessible properties. 
