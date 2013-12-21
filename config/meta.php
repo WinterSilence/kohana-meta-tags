@@ -39,14 +39,16 @@ return array(
 		'revisit-after'		=> '3 days',
 		'robots'			=> 'all',
 		'content-type'		=> Kohana::$content_type.'; charset='.Kohana::$charset,
-		'content-language'	=> I18n::$lang,
+		'content-language'	=> substr(I18n::$lang, -2),
 		'x-ua-compatible'	=> 'IE=edge,chrome=1',
 		'viewport'			=> 'width=device-width,initial-scale=1.0',
 	),
+	// Dont outputs tags with empty content attribute? 
+	'hide_empty' => TRUE,
 	// Cache lifetime in seconds. Default value = 300(5 minutes)
-	'cache_lifetime' => (Kohana::$caching ? 300 : 0), 
-	// Add slash at end of tag? Set as FALSE for HTML5
-	'slash_at_end' => TRUE, 
+	'cache_life' => (Kohana::$caching ? 300 : 0), 
+	// Uses HTML5? Then not added slash at end of tag
+	'html5' => TRUE, 
 	// A separator is added between the parts of the title array
 	'title_separator' => ' - ',
 );

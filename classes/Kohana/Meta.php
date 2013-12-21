@@ -3,9 +3,9 @@
  * Class for work with HTML meta tags. 
  * For get more info about meta tags visit [http://wikipedia.org/wiki/Meta_element](http://wikipedia.org/wiki/Meta_element).
  * 
- * @package    Kohana/Meta
+ * @package    Meta
  * @category   Base
- * @version    1.4
+ * @version    1.5
  * @author     WinterSilence <info@handy-soft.ru>
  * @author     Samuel Demirdjian
  * @copyright  2013 © handy-soft.ru
@@ -34,32 +34,27 @@ abstract class Kohana_Meta {
 	protected $_cfg = array();
 
 	/**
-	 * @var  array  Meta tags
+	 * @var  array  Meta tags attributes
 	 */
 	protected $_tags = array();
 
 	/**
 	 * Get class instance and sets config properties
 	 * 
-	 * @param  array  $config  Optional configuration options
+	 * @param  array  $config  Configuration options [optional]
 	 * @return Meta
+	 * @uses   Arr::merge
 	 */
 	public static function instance(array $config = array())
 	{
 		// Create class instance
-		if ( ! self::$_instance)
+		if (self::$_instance === NULL)
 		{
 			$class = get_called_class();
 			self::$_instance = new $class;
 		}
 		// Sets new configuration option
-		foreach ($config as $key => $value)
-		{
-			if (isset(self::$_instance->_cfg[$key]))
-			{
-				self::$_instance->_cfg[$key] = $value;
-			}
-		}
+		self::$_instance->_cfg = Arr::merge(self::$_instance->_cfg, $config);
 		// Return instance
 		return self::$_instance;
 	}
@@ -115,25 +110,27 @@ abstract class Kohana_Meta {
 	 * @param  string|array  $name   Name tag or array tags
 	 * @param  string        $value  Content attribute
 	 * @return Meta
+	 * @uses   Arr::is_array
+	 * @uses   UTF8::strtolower
 	 */
 	public function set($name, $value = NULL)
 	{
-		if ( ! is_array($name))
+		if ( ! Arr::is_array($name))
 		{
 			$name = array($name => $value);
 		}
 		// Set tags
 		foreach ($name as $tag => $value)
 		{
-			$tag = strtolower($tag);
-			if ($tag != 'title')
+			$tag = UTF8::strtolower($tag);
+			if ($tag !== 'title')
 			{
 				if (isset($this->_tags[$tag]))
 				{
 					// Update meta tag
 					$this->_tags[$tag]['content'] = $value;
 				}
-				else
+				elseif ($this->_cfg['hide_empty'] !== TRUE OR ! empty($value))
 				{
 					// Add meta tag
 					$group = in_array($tag, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
@@ -157,10 +154,10 @@ abstract class Kohana_Meta {
 	 */
 	public function get($name = NULL)
 	{
-		if (is_null($name))
+		if ($name === NULL)
 		{
 			// Get all nonempty tags
-			return array_filter($this->_tags);
+			return $this->_tags;
 		}
 		elseif (isset($this->_tags[$name]))
 		{
@@ -177,7 +174,7 @@ abstract class Kohana_Meta {
 	 */
 	public function delete($name = NULL)
 	{
-		if (is_null($name))
+		if ($name === NULL)
 		{
 			$this->_tags = array();
 		}
@@ -194,7 +191,7 @@ abstract class Kohana_Meta {
 	/**
 	 * Render template(View) with meta data.
 	 * 
-	 * @param   string  $file  Template(View) filename
+	 * @param   string  $file  Template [View] filename
 	 * @return  string
 	 * @uses    View
 	 */
@@ -212,10 +209,10 @@ abstract class Kohana_Meta {
 	 * @param   integer  $method  Action type for title array
 	 * @return  mixed
 	 */
-	public function title($title = NULL, $method = static::TITLE_REPLACE)
+	public function title($title = NULL, $method = self::TITLE_REPLACE)
 	{
 		// Acts as getter if $title is null
-		if (is_null($title))
+		if ($title === NULL)
 		{
 			return $this->get('title');
 		}
@@ -224,11 +221,11 @@ abstract class Kohana_Meta {
 		$old_title = (array) $this->get('title');
 		switch ($method)
 		{
-			case static::TITLE_UNSHIFT:
+			case self::TITLE_UNSHIFT:
 				// Merge, the new one will be prepended (like array_unshift)
 				$this->set('title', array_merge($new_title, $old_title));
 				break;
-			case static::TITLE_PUSH:
+			case self::TITLE_PUSH:
 				// Merge, the new one will be appended (like array_push)
 				$this->set('title', array_merge($old_title, $new_title));
 				break;
