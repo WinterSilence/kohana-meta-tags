@@ -34,11 +34,6 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 	protected $_tags = array();
 
 	/**
-	 * @var  integer  Current tag
-	 */
-	protected $_current = NULL;
-
-	/**
 	 * @var  Config_Group  Configuration options
 	 */
 	protected $_cfg;
@@ -143,7 +138,7 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 					// Updates tag
 					$this->_tags[$tag]['content'] = $value;
 				}
-				elseif ($this->_cfg['hide_empty'] !== TRUE OR ! empty($value))
+				elseif (($this->_cfg['hide_empty'] === TRUE AND ! empty($value)) OR $this->_cfg['hide_empty'] !== TRUE)
 				{
 					// Adds tag
 					$group = in_array($tag, $this->_cfg['http-equiv']) ? 'http-equiv' : 'name';
@@ -244,9 +239,9 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 
 	/**
 	 * Implements [ArrayAccess::offsetGet], gets a given tag.
-	 *
+	 * 
 	 *     $keywords = $meta['keywords'];
-	 *
+	 * 
 	 * @param   string  $offset
 	 * @return  mixed
 	 */
@@ -285,7 +280,7 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 
 	/**
 	 * Implements [ArrayAccess::offsetUnset], delete a given tag.
-	 *
+	 * 
 	 * @param   string  $offset
 	 * @return  void
 	 */
@@ -348,7 +343,7 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 
 	/**
 	 * Sets tags.
-	 *
+	 * 
 	 * @param  string  $name
 	 * @param  string  $value
 	 * @return void
