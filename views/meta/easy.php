@@ -1,36 +1,32 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * Easy\light\alternative version.
- */
+
 // Sets cache lifetime in seconds
 $cache_life = Kohana::$caching ? 300 : 0;
-// Check\load cache
+// Checks & loads cache
 if ($cache_life > 0 AND Fragment::load('meta:'.Request::initial()->uri(), $cache_life, TRUE))
 {
 	return TRUE;
 }
-
-// Get tags, if they are not sended in View
-if ( ! isset($tags))
+// Gets tags, if they are not sended in template
+if ( ! isset($meta_tags))
 {
-	$tags = Meta::instance()->get();
+	$meta_tags = Meta::instance();
 }
-echo '<!-- Meta tags: begin -->'.PHP_EOL;
+echo '		<!-- Meta meta_tags: begin -->'.PHP_EOL;
 echo '		<base href="'.Kohana::$base_url.'"/>'.PHP_EOL;
-// Display title tag, ' - ' uses as separator for parts of title array
-if (isset($tags['title']))
+// Displays title tag, ' - ' uses as separator for parts of title array
+if (isset($meta_tags['title']))
 {
-	echo '		<title>'.HTML::chars(implode(' - ', (array) $tags['title'])).'</title>'.PHP_EOL;
-	unset($tags['title']);
+	echo '		<title>'.HTML::chars(implode(' - ', (array) $meta_tags['title'])).'</title>'.PHP_EOL;
+	unset($meta_tags['title']);
 }
-// Display meta tags
-foreach ($tags as $attributes)
+// Displays tags
+foreach ($meta_tags as $attributes)
 {
 	echo '		<meta'.HTML::attributes($attributes).'/>'.PHP_EOL;
 }
-echo '<!-- Meta tags: end -->'.PHP_EOL;
-
-//Caching displayed tags
+echo '		<!-- Meta meta_tags: end -->'.PHP_EOL;
+// Caching displayed tags
 if ($cache_life > 0)
 {
 	Fragment::save();
