@@ -237,6 +237,31 @@ abstract class Kohana_Meta implements ArrayAccess, Iterator {
 		return $this;
 	}
 
+    public function content_type($mime_type = 'text/html', $encoding = NULL)
+    {
+        if ( ! $encoding )
+        {
+            $encoding = Kohana::$charset;
+        }
+
+        $this->set('content-type', $mime_type.'; charset='.$encoding);
+    }
+
+    public function description($text)
+    {
+        $this->set('description', $text);
+    }
+
+    public function keywords($text)
+    {
+        $this->set('keywords', $text);
+    }
+
+    public function viewport($value)
+    {
+        $this->set('viewport', $value);
+    }
+
 	/**
 	 * Implements [ArrayAccess::offsetGet], gets a given tag.
 	 * 
