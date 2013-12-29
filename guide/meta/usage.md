@@ -1,83 +1,124 @@
-# Usage
+#Usage
 
-##Instance class
-Optional, you can set new config options.
+##Instance
 ~~~
-$meta = Meta::instance($config);
+$meta = Meta::instance();
 ~~~
-##Set tag
+Change instance configuration [Optional]:
 ~~~
-$meta->set('content-language', I18n::$lang);
-$meta->description = 'description text';
+$meta = Meta::instance($new_config_array);
 ~~~
-##Set tags
+
+##Work with tags
+Meta object supports several ways for manipulations with contents:
+- Special methods: [Meta::set], [Meta::get], [Meta::delete].
+- As object properties via [magical methods](http://php.net/manual/language.oop5.overloading.php).
+- As array items via interface [ArrayAccess](http://php.net/manual/class.arrayaccess.php).
+
+###Set
+
 ~~~
-$meta->set(array('author' => 'WinterSilence', 'generator' => 'Kohana 3.3'));
+$meta->set('content-language', substr(I18n::lang(), 0, 2));
+// Sets a few:
+$meta->set(array('author' => 'WinterSilence', 'description' => '...'));
+$meta->description = 'description content';
+$meta['description'] = 'description content';
 ~~~
-##Get tag
+
+###Get
 ~~~
-$meta->get('description');
-$tag_content = $meta->description;
-~~~
-##Get all tag
-~~~
+$description = $meta->get('description');
+// Gets all:
 $all_tags = $meta->get();
+$description = $meta->description;
+$description = $meta['description'];
 ~~~
-##Unset
+
+###Delete
 ~~~
+$meta->delete('description');
+// Delete a few:
+$meta->delete(array('author', 'description'));
+// Delete all:
+$meta->delete();
 unset($meta->description);
+unset($meta['description']);
 ~~~
-##Isset
+
+###Check exist
 ~~~
-if (isset($meta->description))
-{
-	// ...
-}
+if ($meta->get('description') !== NULL)
+   echo $meta->get('description');
+if ($meta->offsetExists('description'))
+   echo $meta->offsetGet('description');
+if (isset($meta['description'])) 
+   echo $meta['description'];
+if (isset($meta->description)) 
+   echo $meta->description;
 ~~~
-##Title tag
-Meta class have method-wrapper for get\set title tag.
+
+###Title as array
 ~~~
-$title = $meta->title();
-// For set title use string or array
-$meta->title('Site name - Page name');
-$meta->title(array('Site name', 'Page name'));
+$meta->title = array('Shop name', 'Category #3');
+array_push($meta->title, 'Product #12');
+// result: array('Shop name', 'Category #3', 'Product #12');
 ~~~
-or use magic methods in difficult situations:
+
+##Display tags
+Include meta view in your template [View](../kohana/mvc/views) or use method [Meta::render].
 ~~~
-$meta->title = array('Shop name', 'Category');
-array_push(Meta::instance()->title, 'Product 123');
-// result: array('Shop name', 'Category', 'Product 123');
+<html>
+	<head>
+		<?=View::factory('meta/full')?>
+		...
+	</head>
+...
 ~~~
-##Loading tags from Config
+Module includes 2 predefined templates: `full.php` and `easy.php` in `MODPATH/meta/views/meta/`.
+You can create custom versions based on standard views (they contains detailed comments).
+
+##Helpers
+
+###Method [Meta::render]
+Renders the [View] to string with HTML code of tags;
+Default view stored in config option `template`.
+~~~
+// Render default view:
+echo $meta->render();
+// Render custom view:
+echo $meta->render('path/to/custom');
+~~~
+Supported 'magical' method [Meta::__toString], uses render method for convert to string.
+~~~
+//  Render default view:
+echo Meta::instance();
+~~~
+
+###Method [Meta::load_from_config]
 ~~~
 $meta->load_from_config('cms.meta_tags');
-$meta->load_from_config(array('site_main_config', 'second_config-blog.meta'));
+$meta->load_from_config(array('theme.meta_tags', 'blog.meta'));
 ~~~
-##Display\Render tags
-Add in your template(View) subview of meta module. 
-Module includes 2 subviews, but you can create a custom version.
-Full\default version:
+To automatically loading tag info from multiple configurations or groups, 
+change `tags_config_groups` in module [configuration](config). 
+By default, loads tags from congif group `../configs/meta.tags`.
 
-    <?php echo View::factory('meta/full') ?>
-Light\alternative version:
+###Method [Meta::title]
+~~~
+$title = $meta->title();
+// Sets as string:
+$meta->title('My site - articles - latest'); 
+// Sets as array:
+$meta->title(array('My site', 'articles', 'latest')); 
+~~~
 
-    <?php echo View::factory('meta/easy') ?>
-As alternative: 
-forcibly call render method (uses for sets nonstandard template)
+##Function [get_meta_tags](http://php.net/manual/function.get-meta-tags.php)
 
-    <?php echo Meta::instance()->render($view_filename) ?>
-or display Meta object as string (called magic method __toString):
-
-    <?php echo Meta::instance() ?>
-
-#Hint
-For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/manual/function.get-meta-tags.php](http://php.net/manual/function.get-meta-tags.php).
+Extracts from the document contents of all meta tags and returns associative array.
 ~~~
 // Assuming the above tags are at www.example.com
 $tags = get_meta_tags('http://www.example.com/');
-// Notice how the keys are all lowercase now, 
-// and how . was replaced by _ in the key.
+// Notice how the keys are all lowercase now, and how . was replaced by _ in the key.
 echo $tags['author'];       // name
 echo $tags['keywords'];     // php documentation
 echo $tags['description'];  // a php manual
