@@ -6,7 +6,7 @@ Supports several ways for manipulations with contents:
 - As array items via interface [ArrayAccess](http://php.net/manual/class.arrayaccess.php).
 
 For more info, see:
-- [Wiki](http://github.com/WinterSilence/kohana-meta-tags/wiki)
+- [GitHub Wiki](http://github.com/WinterSilence/kohana-meta-tags/wiki)
 - [Userguide](http://github.com/WinterSilence/kohana-meta-tags/tree/3.3/master/guide/meta)
 
 ---
