@@ -1,98 +1,16 @@
 ##Meta tags module for Kohana framework 3.х
 
-###Installation and setup:
-Unzip the archive and place the contents into a directory with modules(`DOCROOT/modules/`). 
-If necessary, copy `config/meta.php` in `APPPATH/config/meta.php` and change it.
+Supports several ways for manipulations with contents:
+- Special methods: [Meta::set](http://github.com/WinterSilence/kohana-meta-tags/blob/3.3/master/classes/Kohana/Meta.php#L119), [Meta::get](http://github.com/WinterSilence/kohana-meta-tags/blob/3.3/master/classes/Kohana/Meta.php#L158), [Meta::delete](http://github.com/WinterSilence/kohana-meta-tags/blob/3.3/master/classes/Kohana/Meta.php#L175).
+- As object properties via [magical methods](http://php.net/manual/language.oop5.overloading.php).
+- As array items via interface [ArrayAccess](http://php.net/manual/class.arrayaccess.php).
 
-###Basic usage:
-**Instance class**<br>
-Optional, you can set new config options.
-~~~
-$meta = Meta::instance($config);
-~~~
-**Set tag**
-~~~
-$meta->set('content-language', I18n::$lang);
-$meta->description = 'description text';
-~~~
-**Set tags**
-~~~
-$meta->set(array('author' => 'WinterSilence', 'generator' => 'Kohana 3.3'));
-~~~
-**Get tag**
-~~~
-$meta->get('description');
-$tag_content = $meta->description;
-~~~
-**Get all tag**
-~~~
-$all_tags = $meta->get();
-~~~
-**Unset**
-~~~
-unset($meta->description);
-~~~
-**Isset**
-~~~
-if (isset($meta->description))
-{
-	// ...
-}
-~~~
-**Title tag**<br>
-Meta class have method-wrapper for get\set title tag.
-~~~
-$title = $meta->title();
-// For set title use string or array
-$meta->title('Site name - Page name');
-$meta->title(array('Site name', 'Page name'));
-~~~
-or use magic methods in difficult situations:
-~~~
-$meta->title = array('Shop name', 'Category');
-array_push(Meta::instance()->title, 'Product 123');
-// result: array('Shop name', 'Category', 'Product 123');
-~~~
-**Loading tags from Config**<br>
-~~~
-$meta->load_from_config('cms.meta_tags');
-$meta->load_from_config(array('site_main_config', 'second_config-blog.meta'));
-~~~
-**Display\Render tags**<br>
-Add in your template(View) subview of meta module.<br>
-Module includes 2 subviews, but you can create a custom version.<br>
-Full\default version:
-~~~
-<?php echo View::factory('meta/full') ?>
-~~~
-Light\alternative version:
-~~~
-<?php echo View::factory('meta/easy') ?>
-~~~
-As alternative:<br>
-forcibly call render method (uses for sets nonstandard template)
-~~~
-<?php echo Meta::instance()->render($view_filename) ?>
-~~~
-or display Meta object as string (called magic method __toString())
-~~~
-<?php echo Meta::instance() ?>
-~~~
+For more info, see:
+- [Wiki](http://github.com/WinterSilence/kohana-meta-tags/wiki)
+- [Userguide](http://github.com/WinterSilence/kohana-meta-tags/tree/3.3/master/guide/meta)
 
-###Hint:
-For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/manual/function.get-meta-tags.php](http://php.net/manual/function.get-meta-tags.php).
-~~~
-// Assuming the above tags are at www.example.com
-$tags = get_meta_tags('http://www.example.com/');
-// Notice how the keys are all lowercase now, and how . was replaced by _ in the key.
-echo $tags['author'];       // name
-echo $tags['keywords'];     // php documentation
-echo $tags['description'];  // a php manual
-echo $tags['geo_position']; // 49.33;-86.59
-~~~
-
-###License:
+---
+**License**
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
