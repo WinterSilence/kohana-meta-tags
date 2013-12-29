@@ -112,7 +112,7 @@ $meta->title('My site - articles - latest');
 $meta->title(array('My site', 'articles', 'latest')); 
 ~~~
 
-##Function [get_meta_tags](http://php.net/manual/function.get-meta-tags.php)
+###Function [get_meta_tags](http://php.net/manual/function.get-meta-tags.php)
 
 Extracts from the document contents of all meta tags and returns associative array.
 ~~~
