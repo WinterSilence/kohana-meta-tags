@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * Class for work with HTML meta tags. <br>
- * For get more info about meta tags visit [http://wikipedia.org/wiki/Meta_element](http://wikipedia.org/wiki/Meta_element).
+ * Class for work with HTML meta tags.
+ * For get more info about meta tags visit [wiki/meta_element](http://wikipedia.org/wiki/Meta_element).
  * 
  * @package    Kohana/Meta
  * @category   Base
@@ -281,4 +281,4 @@ abstract class Kohana_Meta {
 	 */
 	protected function __wakeup() {}
 
-} // End Meta
+}

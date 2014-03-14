@@ -1,12 +1,14 @@
-##Meta tags module for Kohana framework 3.х
+## Meta tags module for Kohana framework 3.х
 
-[!!!] In this version added RESTful controller(+ route in init.php) for work with Meta class.
+[!!!] In this version added RESTful controller (+ route in `init.php`) for work with Meta class.
 
-###Installation and setup:
+### Installation and setup
+
 Unzip the archive and place the contents into a directory with modules(`DOCROOT/modules/`). 
 If necessary, copy `config/meta.php` in `APPPATH/config/meta.php` and change it.
 
-###Basic usage:
+### Basic usage
+
 **Instance class**<br>
 Optional, you can set new config options.
 ~~~
@@ -70,9 +72,10 @@ or display Meta object as string (called magic method __toString())
 <?php echo Meta::instance() ?>
 ~~~
 
-###Hint:
-For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/](http://php.net/manual/function.get-meta-tags.php).
+### Hint
+
+For parse meta tags from document use function [get-meta-tag](http://php.net/get-meta-tag).
+
 ~~~
 // Assuming the above tags are at www.example.com
 $tags = get_meta_tags('http://www.example.com/');
@@ -83,7 +86,8 @@ echo $tags['description'];  // a php manual
 echo $tags['geo_position']; // 49.33;-86.59
 ~~~
 
-###License:
+### License
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 return array(
-	// Default template(View) for render tags
+	// Default template (View) for render tags
 	'template' => 'meta/full',
 	// HTTP-EQUIV group tags 
 	'http-equiv' => array(
@@ -21,7 +21,8 @@ return array(
 	),
 	// Load tags from config groups. Ex: array('meta.tags', 'site_meta', 'blog.meta_tags')
 	'tags_config_groups' => array('meta.tags'),
-	// Default tag values. See http://en.wikipedia.org/wiki/Meta_element
+	// Default tag values. 
+	// @link http://wikipedia.org/wiki/Meta_element
 	'tags' => array(
 		'title'				=> '',
 		'description'		=> '',

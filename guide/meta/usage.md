@@ -1,40 +1,55 @@
 # Usage
 
-##Instance class
+## Instance class
+
 Optional, you can set new config options.
 ~~~
 $meta = Meta::instance($config);
 ~~~
-##Set tag
+
+## Set tag
+
 ~~~
 $meta->set('content-language', I18n::$lang);
 $meta->description = 'description text';
 ~~~
-##Set tags
+
+## Set tags
+
 ~~~
 $meta->set(array('author' => 'WinterSilence', 'generator' => 'Kohana 3.3'));
 ~~~
-##Get tag
+
+## Get tag
+
 ~~~
 $meta->get('description');
 $tag_content = $meta->description;
 ~~~
-##Get all tag
+
+## Get all tag
+
 ~~~
 $all_tags = $meta->get();
 ~~~
-##Unset
+
+## Unset
+
 ~~~
 unset($meta->description);
 ~~~
-##Isset
+
+## Isset
+
 ~~~
 if (isset($meta->description))
 {
 	// ...
 }
 ~~~
+
 ##Title tag
+
 Meta class have method-wrapper for get\set title tag.
 ~~~
 $title = $meta->title();
@@ -42,7 +57,9 @@ $title = $meta->title();
 $meta->title('Site name - Page name');
 $meta->title(array('Site name', 'Page name'));
 ~~~
-##Display\Render tags
+
+## Display\Render tags
+
 Add in your template(View) subview of meta module. 
 Module includes 2 subviews, but you can create a custom version.
 Full\default version:
@@ -59,9 +76,9 @@ or display Meta object as string (called magic method __toString):
 
     <?php echo Meta::instance() ?>
 
-#Hint
-For parse meta tags from document use function `get_meta_tags`.
-For gets more info visit [http://php.net/manual/function.get-meta-tags.php](http://php.net/manual/function.get-meta-tags.php).
+# Hint
+
+For parse meta tags from document use function [get-meta-tags](http://php.net/get-meta-tags).
 ~~~
 // Assuming the above tags are at www.example.com
 $tags = get_meta_tags('http://www.example.com/');

@@ -154,4 +154,4 @@ abstract class Kohana_Controller_REST_Meta extends Controller {
 		}
 	}
 
-} // End Controller_REST_Meta
+}
